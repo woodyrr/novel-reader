@@ -1,19 +1,21 @@
-import NavBar from '@/components/NavBar'
+import playText from '@/components/PlayText'
+import NavBar from '@/components/Navbar'
 import Searchbar from '@/components/Searchbar'
 import { Button } from '@/components/ui/button'
 import React from 'react'
-// import playtext from '@/components/PlayText'
+import PlayText from '@/components/PlayText'
+
 
 
 const home = () => {
   return (
     <>
-    <section className='flex flex-col gap-3 w-full h-full' >
-        <NavBar />
-        <div className='flex gap-3'>
-          <Searchbar />
-          <Button variant="outline" className="bg-black/80 active:bg-black text-white font-semibold" />
-        </div>
+    <section className="bg-gray-100 min-h-screen w-full flex flex-col gap-5">
+      <header className="text-center font-bold text-[25px] border py-3 border-gray-300 bg-green-200">ReadOn</header>
+      <div className="px-[6%] flex gap-2 w-full">
+        <PlayText />
+      </div>
+    
     </section>
       
     </>
@@ -21,3 +23,11 @@ const home = () => {
 }
 
 export default home
+
+{/* <div class="bg-gray-100 min-h-screen flex flex-col gap-5">
+    <header class="text-center font-bold text-[25px] border py-3 border-gray-300 bg-green-200">ReadOn</header>
+    <div class="px-[6%] flex gap-2">
+      <playText />
+    </div>
+    
+  </div> */}
