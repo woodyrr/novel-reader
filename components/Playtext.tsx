@@ -1,4 +1,3 @@
-"use client"
 import React, { useState } from 'react';
 import Searchbar from './Searchbar';
 // import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@radix-ui/react-dialog';
@@ -6,8 +5,9 @@ import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import styles from './PlayText.module.css';
 import { Input } from './ui/input';
+import { getAllNovels } from '@/lib/actions';
 const PlayText: React.FC = () => {
-  
+
   const fetchNovel = () => {}
 
   const isLoading = false;

@@ -1,8 +1,11 @@
 "use server"
 import { revalidatePath } from "next/cache";
-import allNovels from "../models/novels.model";
+
 import { connectToDB } from "../mongoose";
 import { scrapeFullNovel } from "../scrapper";
+import { url } from "inspector";
+// import Product from "../models/novels.model";
+import allNovels from "../models/novels.model";
 
 export async function scrapeNovels(novelUrl: string){
     if(!novelUrl) return;
@@ -14,22 +17,53 @@ export async function scrapeNovels(novelUrl: string){
 
         if(!novels) return;
 
-        let currentNovels = novels;
 
-        const existingNovels = await allNovels.findOne({url: novels.url});
+        const existingNovels = await allNovels.findOne({ url: novels.url });
 
-        if(!existingNovels){
+        const newNovel = await allNovels.findOneAndUpdate(
+            {url:novelUrl}, {...novels},
+            //  product ,
+              {upsert: true, new :true} 
+            )
 
-            // currentNovels = {
-            //     ...scrapeFullNovel,
-
-            // }
-        }
-
-        const newNovel = await allNovels.findOneAndUpdate({url:novels.url, text: novels.text, title:novels.title, name:novels.name })
         revalidatePath(`/novels/${newNovel._id}`)
 
     } catch (error: any) {
-        throw new error(`failed to save/upload novel: ${error.message}`)
+        throw new Error(`failed to save/upload novel: ${error.message}`)
+    }
+
+    
+}
+
+export async function getAllNovels() {
+    try {
+
+        connectToDB;
+
+        let allchapters = await allNovels.find()
+        const chapters = allchapters.map((chapter) => ({
+            ...chapter.toObject(), // Convert Mongoose document to plain object
+            _id: chapter._id.toString(), // Convert _id to string
+        }));
+        return chapters;
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export async function getAllNovelsById(productId: string) {
+    try {
+
+        connectToDB;
+
+        const chapters = await allNovels.findOne({_id: productId})
+
+        if(!chapters) return null;
+        
+        return chapters
+
+    } catch (error) {
+        console.log(error)
     }
 }
