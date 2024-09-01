@@ -8,18 +8,25 @@ export async function scrapeFullNovel(url: string){
        
             const $ = cheerio.load(response.data)
             
-            const chapTitle = $('.chapter-title').get().map(val => $(val).text()).join('')
-            const novelText = $('.chapter-c').get().map(val => $(val).text()).join('')
-            const novelName = $('.truyen-title').get().map(val => $(val).text()).join('')
+            // const chapTitle = $('.chapter-title').get().map(val => $(val).text()).join('')
+            // const novelText = $('.chapter-c').get().map(val => $(val).text().split('\n'))
+            // const novelName = $('.truyen-title').get().map(val => $(val).text()).join('')
+
+            const chapTitle = $('.chapter-title').text()
+            const novelText = $('.chapter-c').text()
+            const novelName = $('.truyen-title').text()
+
             // return{ chapTitle, novelName, novelText}
             // console.log(response.data)
         const data = {
-            title:chapTitle,
-            text:novelText,
-            name:novelName,
-            url:url
-        }
-        return data
+            chapTitle,
+            novelText,
+            novelName,
+            url
+        
+        };
+        // console.log(`data: ${JSON.stringify(data)}`);
+        return data;
     } catch (error: any) {
         throw new Error(`failed to scrape novel: ${error.message}`)
     }

@@ -20,7 +20,7 @@ const novelSchema = new mongoose.Schema({
     url:{type: String, required: true, unique: true},
     title:{type: String, required: true, unique: true},
     text:{type: String, required: true, unique: true},
-    name:{type: String, required: true, unique: true}
+    name:{type: String, required: true}
 })
 
 // const allNovels = mongoose.models.allNovels || mongoose.model('allnovels', novelSchema);

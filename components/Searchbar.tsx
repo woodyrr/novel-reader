@@ -88,7 +88,12 @@ const Searchbar = () => {
                         )
                         ) } */}
 
-                        <NovelText />
+                        
+                                {/* {allChapters?.map((product) => (
+                                <div key={product._id}>product={product.text}</div>
+                                ))} */}
+                            
+                            
                         
                         {isLoading && (
                             <p className="flex gap-1 text-center items-center justify-center text-xl">

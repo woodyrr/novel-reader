@@ -4,10 +4,13 @@ import Searchbar from '@/components/Searchbar'
 import { Button } from '@/components/ui/button'
 import React from 'react'
 import PlayText from '@/components/PlayText'
+import { getAllNovels } from '@/lib/actions'
+import NovelCard from '@/components/NovelCard'
 
 
 
-const home = () => {
+const home = async () => {
+  const allChapters = await getAllNovels();
   return (
     <>
     <section className="bg-gray-100 min-h-screen w-full flex flex-col gap-5">
@@ -15,9 +18,21 @@ const home = () => {
       <div className="px-[6%] flex gap-2 w-full">
         <PlayText />
       </div>
+
+      <section className="trending-section">
+        <h2 className="section-text">Trending</h2>
+
+        <div className="flex flex-wrap gap-x-8 gap-y-16">
+          {allChapters?.map((chapter) => (
+            // <div key={product._id}>product={product.text}</div>
+            <NovelCard key={chapter._id} novel={chapter} />
+          ))}
+        
+        </div>
+      </section>
     
     </section>
-      
+    
     </>
   )
 }

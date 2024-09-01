@@ -10,7 +10,7 @@ const PlayText: React.FC = () => {
 
   const fetchNovel = () => {}
 
-  const isLoading = false;
+  const isLoading = false; 
   const isPlaying = false;
   const novel = null; // Replace with actual state logic
   const audioUrl = ''; // Replace with actual state logic

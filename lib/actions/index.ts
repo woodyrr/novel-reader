@@ -13,19 +13,30 @@ export async function scrapeNovels(novelUrl: string){
     try {
         connectToDB();
 
-        const novels = await scrapeFullNovel(novelUrl);
+        const scrapedNovels = await scrapeFullNovel(novelUrl);
 
-        if(!novels) return;
+        if(!scrapedNovels) return;
 
+        let novel = scrapedNovels;
 
-        const existingNovels = await allNovels.findOne({ url: novels.url });
+        const existingNovels = await allNovels.findOne({ url: scrapedNovels.url });
 
+        // if(existingNovels){
+        //     novel = {
+        //         ...scrapeNovels,
+        //         title: chapTitle,
+        //         novelText,
+        //         novelName,
+        //         url
+        //     }
+        // }
         const newNovel = await allNovels.findOneAndUpdate(
-            {url:novelUrl}, {...novels},
+            {url:scrapedNovels.url}, {novel},
             //  product ,
               {upsert: true, new :true} 
             )
-
+            console.log(`newNovel: ${newNovel}`)
+            
         revalidatePath(`/novels/${newNovel._id}`)
 
     } catch (error: any) {
@@ -38,24 +49,52 @@ export async function scrapeNovels(novelUrl: string){
 export async function getAllNovels() {
     try {
 
-        connectToDB;
+        connectToDB();
 
-        let allchapters = await allNovels.find()
-        const chapters = allchapters.map((chapter) => ({
-            ...chapter.toObject(), // Convert Mongoose document to plain object
-            _id: chapter._id.toString(), // Convert _id to string
-        }));
-        return chapters;
+        const chapters = await allNovels.find()
+        // const newChapter = JSON.parse(JSON.stringify(chapters))
+        // const prop= {JSON.parse(JSON.stringify(chapters))}
+        // return newChapter
+        return chapters
+
+        // const transformedChapters = chapters.map((chapter) => ({
+        //     ...chapter.toObject(), // Convert Mongoose document to plain object
+        //     _id: chapter._id.toString(), // Convert _id to string
+        // }));
+
+        // return transformedChapters;
 
     } catch (error) {
         console.log(error)
     }
 }
 
+// export async function getAllNovels() {
+//     try {
+//         // Ensure you call connectToDB() correctly
+//         await connectToDB();
+
+//         // Fetch all novels with a longer timeout
+//         let chapters = await allNovels.find().exec(); // .exec() to get a promise
+
+//         // Transform each document
+//         const transformedChapters = chapters.map((chapter) => ({
+//             ...chapter.toObject(), // Convert Mongoose document to plain object
+//             _id: chapter._id.toString(), // Convert _id to string
+//         }));
+
+//         return transformedChapters;
+
+//     } catch (error) {
+//         console.error('Failed to fetch novels:', error);
+//         throw new Error(`Failed to fetch novels: ${error}`);
+//     }
+// }
+
 export async function getAllNovelsById(productId: string) {
     try {
 
-        connectToDB;
+        connectToDB();
 
         const chapters = await allNovels.findOne({_id: productId})
 
@@ -67,3 +106,5 @@ export async function getAllNovelsById(productId: string) {
         console.log(error)
     }
 }
+
+
