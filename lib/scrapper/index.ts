@@ -32,3 +32,21 @@ export async function scrapeFullNovel(url: string){
     }
 
 }
+
+// export async function getText(text: string){
+//     if(!text) return;
+
+//     try {
+//         const response = await axios.get(text)
+       
+//         const bro = response.data
+//         const data = {
+//             text:bro
+//         }
+        
+//         return data;
+//     } catch (error: any) {
+//         throw new Error(`failed to scrape novel: ${error.message}`)
+//     }
+
+// }

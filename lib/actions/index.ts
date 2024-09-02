@@ -1,11 +1,14 @@
 "use server"
 import { revalidatePath } from "next/cache";
 
+import  UnrealSpeechAPI  from "unrealspeech";
+import { useCallback,useState } from "react";
 import { connectToDB } from "../mongoose";
 import { scrapeFullNovel } from "../scrapper";
 import { url } from "inspector";
 // import Product from "../models/novels.model";
 import allNovels from "../models/novels.model";
+import axios from "axios";
 
 export async function scrapeNovels(novelUrl: string){
     if(!novelUrl) return;
@@ -21,15 +24,6 @@ export async function scrapeNovels(novelUrl: string){
 
         const existingNovels = await allNovels.findOne({ url: scrapedNovels.url });
 
-        // if(existingNovels){
-        //     novel = {
-        //         ...scrapeNovels,
-        //         title: chapTitle,
-        //         novelText,
-        //         novelName,
-        //         url
-        //     }
-        // }
         const newNovel = await allNovels.findOneAndUpdate(
             {url:scrapedNovels.url}, {novel},
             //  product ,
@@ -52,44 +46,14 @@ export async function getAllNovels() {
         connectToDB();
 
         const chapters = await allNovels.find()
-        // const newChapter = JSON.parse(JSON.stringify(chapters))
-        // const prop= {JSON.parse(JSON.stringify(chapters))}
-        // return newChapter
+        console.log(chapters)
         return chapters
-
-        // const transformedChapters = chapters.map((chapter) => ({
-        //     ...chapter.toObject(), // Convert Mongoose document to plain object
-        //     _id: chapter._id.toString(), // Convert _id to string
-        // }));
-
-        // return transformedChapters;
 
     } catch (error) {
         console.log(error)
     }
 }
 
-// export async function getAllNovels() {
-//     try {
-//         // Ensure you call connectToDB() correctly
-//         await connectToDB();
-
-//         // Fetch all novels with a longer timeout
-//         let chapters = await allNovels.find().exec(); // .exec() to get a promise
-
-//         // Transform each document
-//         const transformedChapters = chapters.map((chapter) => ({
-//             ...chapter.toObject(), // Convert Mongoose document to plain object
-//             _id: chapter._id.toString(), // Convert _id to string
-//         }));
-
-//         return transformedChapters;
-
-//     } catch (error) {
-//         console.error('Failed to fetch novels:', error);
-//         throw new Error(`Failed to fetch novels: ${error}`);
-//     }
-// }
 
 export async function getAllNovelsById(productId: string) {
     try {
@@ -107,4 +71,36 @@ export async function getAllNovelsById(productId: string) {
     }
 }
 
+
+// export async function textToSpeech(novelText: string) {
+
+//     const [text, setText] = useState<string>("");
+//     const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
+//     const [isPaused, setIsPaused] = useState<boolean>(false);
+//     const [isResumed, setIsResumed] = useState<boolean>(false);
+//     const [isEnded, setIsEnded] = useState<boolean>(false);
+
+
+
+//     if(!novelText) return;
+
+//     const speak = useCallback(() => {
+//         var msg = new SpeechSynthesisUtterance();
+    
+//         msg.text = <string>text;
+//         function speak() {
+//           window.speechSynthesis.speak(msg);
+//         }
+//         speak();
+//         setIsSpeaking(true);
+//         setIsEnded(false);
+//       }, [text]);
+
+// }
+
+
+// actions/index.tsx
+
+
+  
 

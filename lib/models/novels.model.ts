@@ -18,7 +18,7 @@ import mongoose from "mongoose";
 // export default allNovels
 const novelSchema = new mongoose.Schema({
     url:{type: String, required: true, unique: true},
-    title:{type: String, required: true, unique: true},
+    title:{type: String, required: true},
     text:{type: String, required: true, unique: true},
     name:{type: String, required: true}
 })
